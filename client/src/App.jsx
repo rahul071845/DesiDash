@@ -40,24 +40,24 @@ function App() {
       >
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />                               {/*Done*/}
           <Route path="/login" element={<LoginPage />} />                         {/*Done*/}
           <Route path="/register" element={<RegisterPage />} />                   {/*Done*/}
-          <Route path="/restaurant/:id" element={<RestaurantDetailPage />} />
+          <Route path="/restaurant/:id" element={<RestaurantDetailPage />} />     {/*Done*/}
           <Route path="/cart" element={<CartPage />} />                           {/*Done*/}
           {/* Protected Routes */}
           <Route path="" element={<ProtectedRoute />}>
             <Route path="/profile" element={<ProfilePage />} />                   {/*Done*/}
             <Route path="/checkout" element={<CheckoutPage />} />                 {/*Done*/}
-            <Route path="/order-success" element={<OrderSuccessPage />} />            
+            <Route path="/order-success" element={<OrderSuccessPage />} />        {/*Done*/}          
           </Route>
           {/* Restaurant Routes */}
           <Route path="" element={<OwnerProtectedRoute />}>
-            <Route path="/dashboard" element={<OwnerDashboardPage />} />
+            <Route path="/dashboard" element={<OwnerDashboardPage />} />          {/*Done*/}
             <Route
               path="/dashboard/restaurant/:id/orders"
               element={<RestaurantOrdersPage />}
-            />
+            />                                                                    {/*Done*/}
           </Route>
         </Routes>
       </Box>

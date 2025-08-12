@@ -64,6 +64,14 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ['Order'],
     }),
+    createRestaurant: builder.mutation({
+      query: (data) => ({
+        url: '/restaurants',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['Restaurant'],
+    })
   }),
 });
 
@@ -77,5 +85,6 @@ export const {
   useGetMyOrdersQuery,
   useGetMyRestaurantsQuery,
   useGetRestaurantOrdersQuery,
-  useUpdateOrderStatusMutation
+  useUpdateOrderStatusMutation,
+  useCreateRestaurantMutation
 } = apiSlice;

@@ -135,6 +135,7 @@ const RestaurantDetailPage = () => {
               <Card
                 sx={{
                   height: "100%",
+                  maxWidth: "22rem",
                   borderRadius: 3,
                   boxShadow: 2,
                   transition: "all 0.3s ease",

@@ -3,17 +3,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useRegisterMutation } from "../store/apiSlice.js";
 import { setCredentials } from "../store/authSlice.js";
-import { 
-  Box, 
-  Button, 
-  Container, 
-  TextField, 
-  Typography, 
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
   Paper,
   InputAdornment,
   IconButton,
   CircularProgress,
-  Alert
+  Alert,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import {
   Person as PersonIcon,
@@ -21,7 +26,7 @@ import {
   Lock as LockIcon,
   Visibility,
   VisibilityOff,
-  PersonAdd as PersonAddIcon
+  PersonAdd as PersonAddIcon,
 } from "@mui/icons-material";
 import { toast } from "react-hot-toast";
 
@@ -29,6 +34,7 @@ const RegisterPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("customer");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
@@ -39,7 +45,7 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    
+
     if (!name || !email || !password) {
       setError("Please fill in all fields");
       return;
@@ -51,12 +57,14 @@ const RegisterPage = () => {
     }
 
     try {
-      const res = await register({ name, email, password }).unwrap();
+      const res = await register({ name, email, password, role }).unwrap();
       dispatch(setCredentials({ ...res }));
       toast.success("Account created successfully!");
+      console.log(role);
       navigate("/");
     } catch (err) {
-      const errorMessage = err?.data?.message || err.error || "Registration failed";
+      const errorMessage =
+        err?.data?.message || err.error || "Registration failed";
       setError(errorMessage);
       toast.error(errorMessage);
     }
@@ -109,8 +117,8 @@ const RegisterPage = () => {
 
           {/* Error Alert */}
           {error && (
-            <Alert 
-              severity="error" 
+            <Alert
+              severity="error"
               sx={{ mb: 3, borderRadius: 2 }}
               onClose={() => setError("")}
             >
@@ -120,6 +128,7 @@ const RegisterPage = () => {
 
           {/* Form */}
           <Box component="form" onSubmit={handleSubmit}>
+            {/* Name TextField */}
             <TextField
               margin="normal"
               required
@@ -138,20 +147,10 @@ const RegisterPage = () => {
                   </InputAdornment>
                 ),
               }}
-              sx={{
-                mb: 2,
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 2,
-                  "&:hover fieldset": {
-                    borderColor: "primary.main",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "primary.main",
-                  },
-                },
-              }}
+              sx={{ mb: 2, "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
             />
 
+            {/* Email TextField */}
             <TextField
               margin="normal"
               required
@@ -169,20 +168,10 @@ const RegisterPage = () => {
                   </InputAdornment>
                 ),
               }}
-              sx={{
-                mb: 2,
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 2,
-                  "&:hover fieldset": {
-                    borderColor: "primary.main",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "primary.main",
-                  },
-                },
-              }}
+              sx={{ mb: 2, "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
             />
 
+            {/* Password TextField */}
             <TextField
               margin="normal"
               required
@@ -212,45 +201,57 @@ const RegisterPage = () => {
                   </InputAdornment>
                 ),
               }}
-              sx={{
-                mb: 3,
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 2,
-                  "&:hover fieldset": {
-                    borderColor: "primary.main",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "primary.main",
-                  },
-                },
-              }}
+              sx={{ mb: 2, "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
             />
 
+            {/* ✅ ROLE SELECTOR*/}
+            <FormControl component="fieldset" sx={{ mt: 1, mb: 1 }}>
+              <FormLabel
+                component="legend"
+                sx={{ fontFamily: "Lato, Arial, sans-serif" }}
+              >
+                Registering as a...
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-label="role"
+                name="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <FormControlLabel
+                  value="customer"
+                  control={<Radio />}
+                  label="Customer"
+                />
+                <FormControlLabel
+                  value="restaurantOwner"
+                  control={<Radio />}
+                  label="Restaurant Owner"
+                />
+              </RadioGroup>
+            </FormControl>
+
+            {/* Submit Button */}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               disabled={isLoading}
-              startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : <PersonAddIcon />}
+              startIcon={
+                isLoading ? (
+                  <CircularProgress size={20} color="inherit" />
+                ) : (
+                  <PersonAddIcon />
+                )
+              }
               sx={{
-                mt: 1,
+                mt: 2,
                 mb: 3,
                 py: 1.5,
                 borderRadius: 2,
-                textTransform: "none",
                 fontSize: "1.1rem",
                 fontWeight: 600,
-                fontFamily: "Lato, Arial, sans-serif",
-                bgcolor: "primary.main",
-                "&:hover": {
-                  bgcolor: "primary.dark",
-                  transform: "translateY(-1px)",
-                  boxShadow: "0 4px 12px rgba(230, 126, 34, 0.3)",
-                },
-                "&:disabled": {
-                  bgcolor: "primary.light",
-                },
-                transition: "all 0.3s ease",
               }}
             >
               {isLoading ? "Creating Account..." : "Create Account"}

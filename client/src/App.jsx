@@ -13,6 +13,7 @@ import CheckoutPage from "./pages/CheckoutPage.jsx";
 import OrderSuccessPage from "./pages/OrderSuccessPage.jsx";
 import OwnerProtectedRoute from "./components/common/OwnerProtectedRoute.jsx";
 import OwnerDashboardPage from "./pages/owner/OwnerDashboardPage.jsx";
+import CreateRestaurantPage from "./pages/owner/CreateRestaurantPage.jsx";
 import RestaurantOrdersPage from "./pages/owner/RestaurantOrdersPage.jsx";
 import Footer from "./components/common/Footer.jsx";
 import "./App.css";
@@ -54,6 +55,7 @@ function App() {
           {/* Restaurant Routes */}
           <Route path="" element={<OwnerProtectedRoute />}>
             <Route path="/dashboard" element={<OwnerDashboardPage />} />          {/*Done*/}
+            <Route path="/dashboard/create-restaurant" element={<CreateRestaurantPage/>} />
             <Route
               path="/dashboard/restaurant/:id/orders"
               element={<RestaurantOrdersPage />}

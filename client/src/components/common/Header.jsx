@@ -139,7 +139,7 @@ const Header = () => {
                       <ListItemIcon><PersonIcon /></ListItemIcon>
                       <ListItemText>Profile</ListItemText>
                     </MenuItem>
-                    {userInfo.user.role === "owner" && (
+                    {userInfo.user.role === "restaurantOwner" && (
                       <MenuItem 
                         component={RouterLink} 
                         to="/dashboard"
@@ -211,7 +211,7 @@ const Header = () => {
                   </ListItemButton>
                 </ListItem>
                 
-                {userInfo.user.role === "owner" && (
+                {userInfo.user.role === "restaurantOwner" && (
                   <ListItem disablePadding>
                     <ListItemButton 
                       component={RouterLink} 

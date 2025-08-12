@@ -24,6 +24,7 @@ import {
   removeFromCart,
   decreaseItemQuantity,
   addToCart,
+  clearCart,
 } from "../store/cartSlice.js";
 import EmptyState from "../components/common/EmptyState.jsx";
 
@@ -61,21 +62,24 @@ const CartPage = () => {
     <Container maxWidth="md">
       <Box sx={{ py: 3 }}>
         {/* Header */}
-        <Typography
-          variant="h4"
-          sx={{
-            fontFamily: "Poppins, Arial, sans-serif",
-            fontWeight: 700,
-            color: "text.primary",
-            mb: 3,
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <CartIcon color="primary" />
-          Your Cart
-        </Typography>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontFamily: "Poppins, Arial, sans-serif",
+              fontWeight: 700,
+              color: "text.primary",
+              mb: 3,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <CartIcon color="primary" />
+            Your Cart
+          </Typography>
+          <Button sx={{ mb: 3, fontWeight: 600 }} onClick={() => dispatch(clearCart())}>Clear Cart</Button>
+        </Box>
 
         {/* Cart Items */}
         <Card sx={{ mb: 3, borderRadius: 3, boxShadow: 3 }}>

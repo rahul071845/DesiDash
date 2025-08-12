@@ -7,6 +7,7 @@ import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import restaurantRoutes from "./routes/restaurantRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import menuItemRoutes from "./routes/menuItemRoutes.js";
 
 dotenv.config({ quiet: true });
 
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
 app.use("/users", userRoutes);
 app.use("/restaurants", restaurantRoutes);
 app.use("/orders", orderRoutes);
+app.use("/menuItems", menuItemRoutes);
 
 app.listen(PORT, () => {
   console.log(

@@ -58,20 +58,45 @@ export const apiSlice = createApi({
     }),
     updateOrderStatus: builder.mutation({
       query: ({ orderId, status }) => ({
-        url: `/api/orders/${orderId}/status`,
-        method: 'PUT',
+        url: `/orders/${orderId}/status`,
+        method: "PUT",
         body: { status },
       }),
-      invalidatesTags: ['Order'],
+      invalidatesTags: ["Order"],
     }),
     createRestaurant: builder.mutation({
       query: (data) => ({
-        url: '/restaurants',
-        method: 'POST',
+        url: "/restaurants",
+        method: "POST",
         body: data,
       }),
-      invalidatesTags: ['Restaurant'],
-    })
+      invalidatesTags: ["Restaurant"],
+    }),
+    addMenuItem: builder.mutation({
+      query: ({ restaurantId, data }) => ({
+        url: `/restaurants/${restaurantId}/menuitems`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Restaurant", id: arg.restaurantId },
+      ],
+    }),
+    updateMenuItem: builder.mutation({
+      query: ({ menuItemId, data }) => ({
+        url: `/menuitems/${menuItemId}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Restaurant"],
+    }),
+    deleteMenuItem: builder.mutation({
+      query: (menuItemId) => ({
+        url: `/menuitems/${menuItemId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Restaurant"],
+    }),
   }),
 });
 
@@ -86,5 +111,8 @@ export const {
   useGetMyRestaurantsQuery,
   useGetRestaurantOrdersQuery,
   useUpdateOrderStatusMutation,
-  useCreateRestaurantMutation
+  useCreateRestaurantMutation,
+  useAddMenuItemMutation,
+  useUpdateMenuItemMutation,
+  useDeleteMenuItemMutation,
 } = apiSlice;

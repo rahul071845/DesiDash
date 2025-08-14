@@ -15,6 +15,7 @@ import OwnerProtectedRoute from "./components/common/OwnerProtectedRoute.jsx";
 import OwnerDashboardPage from "./pages/owner/OwnerDashboardPage.jsx";
 import CreateRestaurantPage from "./pages/owner/CreateRestaurantPage.jsx";
 import RestaurantOrdersPage from "./pages/owner/RestaurantOrdersPage.jsx";
+import ManageMenuPage from "./pages/owner/ManageMenuPage.jsx";
 import Footer from "./components/common/Footer.jsx";
 import "./App.css";
 
@@ -56,10 +57,8 @@ function App() {
           <Route path="" element={<OwnerProtectedRoute />}>
             <Route path="/dashboard" element={<OwnerDashboardPage />} />          {/*Done*/}
             <Route path="/dashboard/create-restaurant" element={<CreateRestaurantPage/>} />
-            <Route
-              path="/dashboard/restaurant/:id/orders"
-              element={<RestaurantOrdersPage />}
-            />                                                                    {/*Done*/}
+            <Route path="/dashboard/restaurant/:id/orders" element={<RestaurantOrdersPage />}/>       {/*Done*/}
+            <Route path="/dashboard/restaurant/:id/menu" element={<ManageMenuPage />}/>
           </Route>
         </Routes>
       </Box>

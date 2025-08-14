@@ -17,6 +17,8 @@ import {
   LocationOn as LocationIcon,
   ArrowForwardIos as ArrowIcon,
   Add as AddIcon,
+  MenuBook as MenuIcon,
+  Receipt as ReceiptIcon,
 } from "@mui/icons-material";
 
 const OwnerDashboardPage = () => {
@@ -152,16 +154,13 @@ const OwnerDashboardPage = () => {
           </Card>
         ) : (
           /* Restaurant List */
-          <Stack spacing={2}>
+          <Stack spacing={3}>
             {restaurants.map((restaurant) => (
               <Card
                 key={restaurant._id}
-                component={RouterLink}
-                to={`/dashboard/restaurant/${restaurant._id}/orders`}
                 sx={{
                   borderRadius: 3,
                   boxShadow: 2,
-                  textDecoration: "none",
                   transition: "all 0.3s ease",
                   border: "1px solid",
                   borderColor: "divider",
@@ -169,61 +168,82 @@ const OwnerDashboardPage = () => {
                     boxShadow: 4,
                     borderColor: "primary.main",
                     transform: "translateY(-2px)",
-                    "& .arrow-icon": {
-                      transform: "translateX(4px)",
-                      color: "primary.dark",
-                    },
-                    "& .restaurant-name": {
-                      color: "primary.main",
-                    },
                   },
                 }}
               >
-                <CardContent sx={{ py: 2 }}>
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Box sx={{ flexGrow: 1 }}>
-                      <Typography
-                        className="restaurant-name"
-                        variant="h6"
-                        sx={{
-                          fontWeight: 600,
-                          color: "text.primary",
-                          mb: 1,
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 1,
-                          transition: "color 0.3s ease",
-                        }}
-                      >
-                        <StorefrontIcon color="primary" fontSize="small" />
-                        {restaurant.name}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 0.5,
-                        }}
-                      >
-                        <LocationIcon fontSize="small" />
-                        {restaurant.address}
-                      </Typography>
-                    </Box>
-
-                    <ArrowIcon
-                      className="arrow-icon"
+                <CardContent>
+                  {/* Restaurant Info */}
+                  <Box sx={{ mb: 3 }}>
+                    <Typography
+                      variant="h6"
                       sx={{
-                        color: "primary.main",
-                        transition: "all 0.3s ease",
-                        fontSize: "1.2rem",
+                        fontWeight: 600,
+                        color: "text.primary",
+                        mb: 1,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
                       }}
-                    />
+                    >
+                      <StorefrontIcon color="primary" fontSize="small" />
+                      {restaurant.name}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 0.5,
+                      }}
+                    >
+                      <LocationIcon fontSize="small" />
+                      {restaurant.address}
+                    </Typography>
+                  </Box>
+
+                  {/* Action Buttons */}
+                  <Stack 
+                    direction={{ xs: "column", sm: "row" }} 
+                    spacing={2}
+                  >
+                    <Button
+                      variant="contained"
+                      component={RouterLink}
+                      to={`/dashboard/restaurant/${restaurant._id}/orders`}
+                      startIcon={<ReceiptIcon />}
+                      sx={{
+                        flex: 1,
+                        borderRadius: 2,
+                        textTransform: "none",
+                        fontWeight: 600,
+                        "&:hover": {
+                          transform: "translateY(-1px)",
+                        },
+                        transition: "all 0.3s ease",
+                      }}
+                    >
+                      View Orders
+                    </Button>
+                    
+                    <Button
+                      variant="outlined"
+                      component={RouterLink}
+                      to={`/dashboard/restaurant/${restaurant._id}/menu`}
+                      startIcon={<MenuIcon />}
+                      sx={{
+                        flex: 1,
+                        borderRadius: 2,
+                        textTransform: "none",
+                        fontWeight: 600,
+                        "&:hover": {
+                          transform: "translateY(-1px)",
+                        },
+                        transition: "all 0.3s ease",
+                      }}
+                    >
+                      Manage Menu
+                    </Button>
                   </Stack>
                 </CardContent>
               </Card>

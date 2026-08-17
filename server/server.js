@@ -1,5 +1,7 @@
-import express from "express";
 import dotenv from "dotenv";
+import express from "express";
+import http from "http";
+import { Server } from 'socket.io';
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -14,6 +16,26 @@ dotenv.config({ quiet: true });
 connectDB();
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: { origin: process.env.FRONTEND_URL, methods: ["GET", "POST"] },
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+
+io.on("connection", (socket) => {
+  console.log("a user connected");
+  socket.on("joinRoom", (userId) => {
+    socket.join(userId);
+    console.log(`User ${userId} joined their room.`);
+  });
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
 
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
@@ -26,16 +48,12 @@ app.use(cookieParser());
 
 const PORT = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-  res.send("Welcome to DesiDash api!");
-});
-
 app.use("/users", userRoutes);
 app.use("/restaurants", restaurantRoutes);
 app.use("/orders", orderRoutes);
 app.use("/menuItems", menuItemRoutes);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(
     `Server is running in ${
       process.env.NODE_ENV || "development"

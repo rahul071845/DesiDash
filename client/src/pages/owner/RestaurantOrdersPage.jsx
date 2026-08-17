@@ -1,4 +1,7 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import io from "socket.io-client";
 import {
   useGetRestaurantOrdersQuery,
   useUpdateOrderStatusMutation,
@@ -26,15 +29,34 @@ import {
 } from "@mui/icons-material";
 import { toast } from "react-hot-toast";
 
+const socket = io(import.meta.env.VITE_API_URL);
+
 const RestaurantOrdersPage = () => {
   const { id: restaurantId } = useParams();
   const {
     data: orders = [],
     isLoading,
     error,
+    refetch,
   } = useGetRestaurantOrdersQuery(restaurantId);
+  const { userInfo } = useSelector((state) => state.auth);
   const [updateOrderStatus, { isLoading: isUpdating }] =
     useUpdateOrderStatusMutation();
+
+  useEffect(() => {
+    if (userInfo) {
+      socket.emit("joinRoom", userInfo.user._id);
+      socket.on("new_order", (newOrder) => {
+        if (newOrder.restaurant === restaurantId) {
+          toast.success("You have a new order!");
+          refetch(); // Automatically refetch the order list
+        }
+      });
+    }
+    return () => {
+      socket.off("new_order");
+    };
+  }, [userInfo, restaurantId, refetch]);
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
@@ -158,7 +180,9 @@ const RestaurantOrdersPage = () => {
                         spacing={3}
                         sx={{ mb: 1 }}
                       >
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                        >
                           <Avatar
                             sx={{
                               width: 24,
@@ -174,7 +198,9 @@ const RestaurantOrdersPage = () => {
                           </Typography>
                         </Box>
 
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                        >
                           <CalendarIcon fontSize="small" color="action" />
                           <Typography variant="body2" color="text.secondary">
                             {new Date(order.createdAt).toLocaleDateString()}
